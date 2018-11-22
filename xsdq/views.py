@@ -31,7 +31,7 @@ class Search(APIView):
     def get(self, request):
         surname = request.GET.get('surname')
         list1 = Name.objects.filter(name__startswith=surname)
-        paginator = Paginator(list1, 300)
+        paginator = Paginator(list1, 40)
         try:
             page = int(request.GET.get('page'))
         except:

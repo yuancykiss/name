@@ -12,8 +12,8 @@
     <br>
 <span class="step-links">
         {% if list.has_previous %}
-            <a href="?page=1">&laquo; 首页</a>
-            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+            <a href="?surname={{this_surname}}&page=1">&laquo; 首页</a>
+            <a href="?surname={{this_surname}}&page={{ list.previous_page_number }}">上一页</a>
         {% endif %}
 
         <span class="current">
@@ -21,8 +21,8 @@
         </span>
 
         {% if list.has_next %}
-            <a href="?surname={{this_surname}}?page={{ list.next_page_number }}">下一页</a>
-            <a href="?surname={{this_surname}}?page={{ list.paginator.num_pages }}">尾页 &raquo;</a>
+            <a href="?surname={{this_surname}}&page={{ list.next_page_number }}">下一页</a>
+            <a href="?surname={{this_surname}}&page={{ list.paginator.num_pages }}">尾页 &raquo;</a>
         {% endif %}
     </span>
 </body>
