@@ -12,10 +12,6 @@ def conn_db():
     return db, cur
 
 
-def insert_db(**kwargs):
-    pass
-
-
 def get_page(url):
     """
     发起请求并返回网页text
@@ -74,8 +70,8 @@ def get_name(surname_url):
 def get_info(names_list, surname):
     """
     第三层：解析各个字段，并插入数据库
-    :param names_list:
-    :param surname:
+    :param names_list: 待爬取的姓名列表
+    :param surname: 姓氏
     :return:
     """
     db, cur = conn_db()
@@ -83,6 +79,7 @@ def get_info(names_list, surname):
         url = 'http://' + surname + '.resgain.net/name/' + item + '.html'
         html = get_page(url)
         etree_html = etree.HTML(html)
+
         # name
         name = item
         print(name)
@@ -103,7 +100,7 @@ def get_info(names_list, surname):
         # three_talents
         three_talents = wuxing[1]
         # print(five_lines, three_talents)
-        # five_ge
+        # five_ge 五格
         five_ge = []
         old_five_ge = etree_html.xpath('//div[@class="container"]/div[4]/div[2]//div[@class="col-xs-12"][1]/blockquote/text()')
         for item in old_five_ge:
@@ -113,6 +110,7 @@ def get_info(names_list, surname):
         # print(five_ge)
 
         # five_ge_parse
+        # 五格解析
         five_ge_parse = []
         old_five_ge_parse = etree_html.xpath('//div[@class="container"]/div[4]/div[2]//div[@class="col-xs-12"][2]/blockquote/div/text()')
         for item in old_five_ge_parse:
@@ -134,15 +132,22 @@ def main():
     url = 'http://www.resgain.net/xmdq.html'
     surnames, surnames_urls = get_surname(url)
     print(surnames_urls)
+    # 开50个线程，并给每个线程分配爬取的范围
     for i in range(0, 50):
-        t1 = threading.Thread(target=thread_work, args=[surnames_urls, (len(surnames_urls)//50)*i, (len(surnames_urls)//50)*(i+1), i])
+        t1 = threading.Thread(target=thread_work, args=[surnames_urls, (len(surnames_urls)//50)*i, (len(surnames_urls)//50)*(i+1)])
         t1.start()
         # thread_work(surnames_urls, (len(surnames_urls)//10)*i, (len(surnames_urls)//10)*(i+1))
 
 
-def thread_work(surnames_urls, start_len, end_len, i):
+def thread_work(surnames_urls, start_len, end_len):
+    """
+    单个线程任务
+    :param surnames_urls: 待爬取的urls
+    :param start_len: 起始url
+    :param end_len: 结束url
+    :return:
+    """
     for index in range(start_len, end_len):
-        print(i)
         get_name(surnames_urls[index])
 
 
