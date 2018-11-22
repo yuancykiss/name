@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    {% for surname in list %}
+    <a href="/xsdq/info/?name={{ surname.name }}">{{ surname.name }}</a>
+    {% endfor %}
+    <br>
+<span class="step-links">
+        {% if list.has_previous %}
+            <a href="?page=1">&laquo; 首页</a>
+            <a href="?page={{ contacts.previous_page_number }}">上一页</a>
+        {% endif %}
+
+        <span class="current">
+             {{ list.number }} / {{ list.paginator.num_pages }}
+        </span>
+
+        {% if list.has_next %}
+            <a href="?surname={{this_surname}}?page={{ list.next_page_number }}">下一页</a>
+            <a href="?surname={{this_surname}}?page={{ list.paginator.num_pages }}">尾页 &raquo;</a>
+        {% endif %}
+    </span>
+</body>
+</html>
